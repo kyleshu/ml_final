@@ -23,19 +23,21 @@ def prepare_data(column: np.ndarray, forecast_out: int, test_size: float):
 
 
 def linear_regression(X_train: np.ndarray, X_test: np.ndarray, Y_train: np.ndarray, Y_test: np.ndarray,
-                      X_lately: np.ndarray):
+                      X_lately: np.ndarray, name: str):
     model = linear_model.LinearRegression()
 
     model.fit(X_train, Y_train)
     score = model.score(X_test, Y_test)
-    print("Score is ", score)
+    print("Score for ", name, " is ", score)
 
     y_test_predict = model.predict(X_test)
 
     plt.figure(figsize=(16, 8))
     plt.plot(y_test_predict)
     plt.plot(Y_test)
+    #plt.savefig('results/'+name+'.jpg')
     plt.show()
 
     forecast = model.predict(X_lately)
-    print("Forecast is ", forecast)
+    #print("Forecast is ", forecast)
+    return score
