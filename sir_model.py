@@ -31,7 +31,7 @@ if __name__ == '__main__':
           'where country = \'Italy\' order by  days_since_0122 asc '
     df = pd.read_sql(sql, conn)
 
-    ydata = df.infected.values[30:].astype(float) / 150000  # 这个30可以调更好地适应模型
+    ydata = df.infected.values[30:].astype(float) / 200000  # 这个30可以调更好地适应模型, 这里的200000代表总人口
     xdata = df.days_since_0122.values[30:].astype(float)  # 这个30可以调更好地适应模型
 
     x_all = [i for i in range(30, 190)]
