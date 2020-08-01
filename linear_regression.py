@@ -36,7 +36,7 @@ def linear_regression(X_train: np.ndarray, X_test: np.ndarray, Y_train: np.ndarr
     plt.figure(figsize=(16, 8))
     plt.plot(y_test_predict)
     plt.plot(Y_test)
-    #plt.savefig('results/'+name+'.jpg')
+    #plt.savefig('results/linear_regression/'+name+'.jpg')
     plt.show()
 
     forecast = model.predict(X_lately)
@@ -60,7 +60,7 @@ if __name__ == '__main__':
         scores.append(score)
     plt.plot(days, scores)
     plt.title('confirmed score')
-    plt.savefig('results/confirmed_score.jpg')
+    plt.savefig('results/linear_regression/confirmed_score.jpg')
     plt.show()
 
 
@@ -76,7 +76,7 @@ if __name__ == '__main__':
         scores.append(score)
     plt.plot(days, scores)
     plt.title('new confirmed score')
-    plt.savefig('results/new_confirmed_score.jpg')
+    plt.savefig('results/linear_regression/new_confirmed_score.jpg')
     plt.show()
 
     cursor = cursor.execute('select days_since_0122, deaths from covid_19_data_full where country = \'Italy\' order by days_since_0122 asc')
@@ -91,7 +91,7 @@ if __name__ == '__main__':
         scores.append(score)
     plt.plot(days, scores)
     plt.title('deaths score')
-    plt.savefig('results/deaths_score.jpg')
+    plt.savefig('results/linear_regression/deaths_score.jpg')
     plt.show()
 
     cursor = cursor.execute('select days_since_0122, new_deaths from covid_19_data_full where country = \'Italy\' order by days_since_0122 asc')
@@ -106,7 +106,7 @@ if __name__ == '__main__':
         scores.append(score)
     plt.plot(days, scores)
     plt.title('new deaths score')
-    plt.savefig('results/new_deaths_score.jpg')
+    plt.savefig('results/linear_regression/new_deaths_score.jpg')
     plt.show()
 
     cursor = cursor.execute('select days_since_0122, recovered from covid_19_data_full where country = \'Italy\' order by days_since_0122 asc')
@@ -121,7 +121,7 @@ if __name__ == '__main__':
         scores.append(score)
     plt.plot(days, scores)
     plt.title('recovered score')
-    plt.savefig('results/recovered_score.jpg')
+    plt.savefig('results/linear_regression/recovered_score.jpg')
     plt.show()
 
     cursor = cursor.execute('select days_since_0122, new_recovered from covid_19_data_full where country = \'Italy\' order by days_since_0122 asc')
@@ -136,5 +136,5 @@ if __name__ == '__main__':
         scores.append(score)
     plt.plot(days, scores)
     plt.title('new_recovered score')
-    plt.savefig('results/new_recovered_score.jpg')
+    plt.savefig('results/linear_regression/new_recovered_score.jpg')
     plt.show()
