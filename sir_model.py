@@ -15,6 +15,12 @@ def sir_model(y, x, beta, gamma):
 def fit_odeint(x, beta, gamma):
     return integrate.odeint(sir_model, (S0, I0, R0), x, args=(beta, gamma))[:, 1]
 
+def fit_odeint_susceptible(x, beta, gamma):
+    return integrate.odeint(sir_model, (S0, I0, R0), x, args=(beta, gamma))[:, 0]
+
+def fit_odeint_recovered(x, beta, gamma):
+    return integrate.odeint(sir_model, (S0, I0, R0), x, args=(beta, gamma))[:, 2]
+
 
 if __name__ == '__main__':
     conn = dp.import_data_to_db('full')
@@ -39,9 +45,13 @@ if __name__ == '__main__':
     print("Gamma:", popt[1])
 
     fitted = fit_odeint(x_all, *popt)
+    fitted2 = fit_odeint_susceptible(x_all, *popt)
+    fitted3 = fit_odeint_recovered(x_all, *popt)
 
     plt.plot(xdata, ydata, 'o')
     plt.plot(x_all, fitted)
+    plt.plot(x_all, fitted2)
+    plt.plot(x_all, fitted3)
     plt.title('SIR infection model')
     plt.savefig('results/sir/infection.jpg')
     plt.show()
