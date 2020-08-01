@@ -15,8 +15,10 @@ def sir_model(y, x, beta, gamma):
 def fit_odeint(x, beta, gamma):
     return integrate.odeint(sir_model, (S0, I0, R0), x, args=(beta, gamma))[:, 1]
 
+
 def fit_odeint_susceptible(x, beta, gamma):
     return integrate.odeint(sir_model, (S0, I0, R0), x, args=(beta, gamma))[:, 0]
+
 
 def fit_odeint_recovered(x, beta, gamma):
     return integrate.odeint(sir_model, (S0, I0, R0), x, args=(beta, gamma))[:, 2]
