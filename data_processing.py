@@ -3,16 +3,19 @@ import csv
 import datetime
 
 
-def import_data_to_db(dataset: str):
-    con = sqlite3.connect(':memory:')
+def import_data_to_db(dataset: str, co: sqlite3.Connection = None):
+    if co:
+        con = co
+    else:
+        con = sqlite3.connect(':memory:')
     cur = con.cursor()
     cur.execute(
-        'create table covid_19_data_' + dataset + '(prov char(128), country char(128), latitude decimal(20,10), '
+        'create table covid_19_data_' + dataset + ' (prov char(128), country char(128), latitude decimal(20,10), '
                                                   'longitude decimal(20,10), confirmed decimal(10,2), deaths decimal('
                                                   '10,2), recovered decimal(10,2), days_since_0122 decimal(10,2), '
                                                   'day_of_week integer, is_weekday integer, new_confirmed decimal(10,'
                                                   '2), new_deaths decimal(10,2), new_recovered decimal(10,2))')
-    cur.execute('create index pcd on covid_19_data_' + dataset + ' (prov, country, days_since_0122)')
+    cur.execute('create index pcd_' + dataset + ' on covid_19_data_' + dataset + ' (prov, country, days_since_0122)')
 
     rows = []
     with open('data/' + dataset + '/time_series_covid_19_confirmed.csv', 'r', encoding='utf-8') as source:
@@ -60,7 +63,7 @@ def import_data_to_db(dataset: str):
                     else:
                         update.append(int(line[i]))
                     update.extend(line[0:2])
-                    update.append(i-4)
+                    update.append(i - 4)
                     updates.append(update)
     cur = cur.executemany('update covid_19_data_' + dataset + ' set deaths=?, new_deaths=? where prov=? and country=? '
                                                               'and days_since_0122=?', updates)
@@ -79,7 +82,7 @@ def import_data_to_db(dataset: str):
                     else:
                         update.append(int(line[i]))
                     update.extend(line[0:2])
-                    update.append(i-4)
+                    update.append(i - 4)
                     updates.append(update)
     cur = cur.executemany('update covid_19_data_' + dataset + ' set recovered=?, new_recovered=? where prov=? and '
                                                               'country=? and days_since_0122=?', updates)

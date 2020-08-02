@@ -24,7 +24,7 @@ def prepare_data(column: np.ndarray, forecast_out: int, test_size: float):
 
 
 def linear_regression(X_train: np.ndarray, X_test: np.ndarray, Y_train: np.ndarray, Y_test: np.ndarray,
-                      X_lately: np.ndarray, name: str):
+                      X_lately: np.ndarray, name: str, save_image: bool = False):
     model = linear_model.LinearRegression()
 
     model.fit(X_train, Y_train)
@@ -36,26 +36,30 @@ def linear_regression(X_train: np.ndarray, X_test: np.ndarray, Y_train: np.ndarr
     plt.figure(figsize=(16, 8))
     plt.plot(y_test_predict)
     plt.plot(Y_test)
-    #plt.savefig('results/linear_regression/'+name+'.jpg')
+    if save_image:
+        plt.savefig('results/linear_regression/'+name+'.jpg')
     plt.show()
 
     forecast = model.predict(X_lately)
-    #print("Forecast is ", forecast)
+    if save_image:
+        print("Forecast for", name, ':', forecast)
     return score
+
 
 if __name__ == '__main__':
 
     conn = dp.import_data_to_db('full')
     cursor = conn.cursor()
 
-    cursor = cursor.execute('select days_since_0122, confirmed from covid_19_data_full where country = \'Italy\' order by days_since_0122 asc')
+    cursor = cursor.execute(
+        'select days_since_0122, confirmed from covid_19_data_full where country = \'Italy\' order by days_since_0122 asc')
     data = cursor.fetchall()
     data_array = np.array(data)[:, 1]
     days = []
     scores = []
     for i in range(1, 31):
         X_train, X_test, Y_train, Y_test, X_lately = prepare_data(data_array, i, 0.2)
-        score = linear_regression(X_train, X_test, Y_train, Y_test, X_lately, 'confirmed'+str(i))
+        score = linear_regression(X_train, X_test, Y_train, Y_test, X_lately, 'confirmed' + str(i))
         days.append(i)
         scores.append(score)
     plt.plot(days, scores)
@@ -63,15 +67,15 @@ if __name__ == '__main__':
     plt.savefig('results/linear_regression/confirmed_score.jpg')
     plt.show()
 
-
-    cursor = cursor.execute('select days_since_0122, new_confirmed from covid_19_data_full where country = \'Italy\' order by days_since_0122 asc')
+    cursor = cursor.execute(
+        'select days_since_0122, new_confirmed from covid_19_data_full where country = \'Italy\' order by days_since_0122 asc')
     data = cursor.fetchall()
     data_array = np.array(data)[:, 1]
     days = []
     scores = []
     for i in range(1, 31):
         X_train, X_test, Y_train, Y_test, X_lately = prepare_data(data_array, i, 0.2)
-        score = linear_regression(X_train, X_test, Y_train, Y_test, X_lately, 'new_confirmed'+str(i))
+        score = linear_regression(X_train, X_test, Y_train, Y_test, X_lately, 'new_confirmed' + str(i))
         days.append(i)
         scores.append(score)
     plt.plot(days, scores)
@@ -79,14 +83,15 @@ if __name__ == '__main__':
     plt.savefig('results/linear_regression/new_confirmed_score.jpg')
     plt.show()
 
-    cursor = cursor.execute('select days_since_0122, deaths from covid_19_data_full where country = \'Italy\' order by days_since_0122 asc')
+    cursor = cursor.execute(
+        'select days_since_0122, deaths from covid_19_data_full where country = \'Italy\' order by days_since_0122 asc')
     data = cursor.fetchall()
     data_array = np.array(data)[:, 1]
     days = []
     scores = []
     for i in range(1, 31):
         X_train, X_test, Y_train, Y_test, X_lately = prepare_data(data_array, i, 0.2)
-        score = linear_regression(X_train, X_test, Y_train, Y_test, X_lately, 'deaths'+str(i))
+        score = linear_regression(X_train, X_test, Y_train, Y_test, X_lately, 'deaths' + str(i))
         days.append(i)
         scores.append(score)
     plt.plot(days, scores)
@@ -94,14 +99,15 @@ if __name__ == '__main__':
     plt.savefig('results/linear_regression/deaths_score.jpg')
     plt.show()
 
-    cursor = cursor.execute('select days_since_0122, new_deaths from covid_19_data_full where country = \'Italy\' order by days_since_0122 asc')
+    cursor = cursor.execute(
+        'select days_since_0122, new_deaths from covid_19_data_full where country = \'Italy\' order by days_since_0122 asc')
     data = cursor.fetchall()
     data_array = np.array(data)[:, 1]
     days = []
     scores = []
     for i in range(1, 31):
         X_train, X_test, Y_train, Y_test, X_lately = prepare_data(data_array, i, 0.2)
-        score = linear_regression(X_train, X_test, Y_train, Y_test, X_lately, 'new_deaths'+str(i))
+        score = linear_regression(X_train, X_test, Y_train, Y_test, X_lately, 'new_deaths' + str(i))
         days.append(i)
         scores.append(score)
     plt.plot(days, scores)
@@ -109,14 +115,15 @@ if __name__ == '__main__':
     plt.savefig('results/linear_regression/new_deaths_score.jpg')
     plt.show()
 
-    cursor = cursor.execute('select days_since_0122, recovered from covid_19_data_full where country = \'Italy\' order by days_since_0122 asc')
+    cursor = cursor.execute(
+        'select days_since_0122, recovered from covid_19_data_full where country = \'Italy\' order by days_since_0122 asc')
     data = cursor.fetchall()
     data_array = np.array(data)[:, 1]
     days = []
     scores = []
     for i in range(1, 31):
         X_train, X_test, Y_train, Y_test, X_lately = prepare_data(data_array, i, 0.2)
-        score = linear_regression(X_train, X_test, Y_train, Y_test, X_lately, 'recovered'+str(i))
+        score = linear_regression(X_train, X_test, Y_train, Y_test, X_lately, 'recovered' + str(i))
         days.append(i)
         scores.append(score)
     plt.plot(days, scores)
@@ -124,14 +131,15 @@ if __name__ == '__main__':
     plt.savefig('results/linear_regression/recovered_score.jpg')
     plt.show()
 
-    cursor = cursor.execute('select days_since_0122, new_recovered from covid_19_data_full where country = \'Italy\' order by days_since_0122 asc')
+    cursor = cursor.execute(
+        'select days_since_0122, new_recovered from covid_19_data_full where country = \'Italy\' order by days_since_0122 asc')
     data = cursor.fetchall()
     data_array = np.array(data)[:, 1]
     days = []
     scores = []
     for i in range(1, 31):
         X_train, X_test, Y_train, Y_test, X_lately = prepare_data(data_array, i, 0.2)
-        score = linear_regression(X_train, X_test, Y_train, Y_test, X_lately, 'new_recovered'+str(i))
+        score = linear_regression(X_train, X_test, Y_train, Y_test, X_lately, 'new_recovered' + str(i))
         days.append(i)
         scores.append(score)
     plt.plot(days, scores)

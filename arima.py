@@ -26,7 +26,7 @@ if __name__ == '__main__':
 
         # Define the p, d and q parameters to take any value between 0 and 3
         p = d = q = range(0, 3)
-        # Generate all different combinations of p, q and q
+        # Generate all different combinations of p, d and q
         pdq = list(itertools.product(p, d, q))
 
         aic = []
